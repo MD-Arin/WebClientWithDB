@@ -9,7 +9,7 @@ import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class Database {
+public  abstract class Database {
 
     private String dbUsername;
     private String dbPassword;

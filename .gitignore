@@ -2,3 +2,10 @@
 /nbproject/
 /build.xml/
 /*.class/
+.idea/
+WebClientWithDB.iml
+/target/classes
+/target/generated-sources/
+/out/production
+
+
