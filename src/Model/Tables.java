@@ -6,6 +6,7 @@
 package Model;
 
 import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -17,6 +18,7 @@ import java.util.logging.Logger;
 public class Tables extends Database {
 
     private Logger tablesLog = Logger.getLogger(Tables.class.getName());
+    private final String dropLengthTable = "DROP TABLE IF EXISTS lengths;";
     private final String createLengthTable = "CREATE TABLE IF NOT EXISTS lengths(LengthID INT NOT NULL "
             + "AUTO_INCREMENT, Miles INT, Kilometers DOUBLE, DateModified TIMESTAMP DEFAULT "
             + "CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, PRIMARY KEY(LengthID));";
@@ -25,6 +27,15 @@ public class Tables extends Database {
 
     public Tables() {
         super();
+        
+        //Drop Table if it already Exists
+        try{
+            Statement dropTable = getConnection().createStatement();
+            dropTable.execute(this.dropLengthTable);
+            tablesLog.log(Level.INFO, "TABLE DROPPED SUCCESSFULLY");
+        } catch (SQLException e){
+            tablesLog.log(Level.SEVERE, e.getMessage(), e);
+        }
 
         //Create Table
         try {
