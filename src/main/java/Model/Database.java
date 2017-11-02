@@ -1,4 +1,4 @@
-package Model;
+package main.java.Model;
 
 import java.io.FileInputStream;
 import java.io.InputStream;
@@ -33,7 +33,7 @@ public  abstract class Database {
             this.dbUsername = dbProps.getProperty("username");
             this.dbPassword = dbProps.getProperty("password");
 
-            Class.forName("com.mysql.cj.jdbc.Driver");
+            Class.forName("com.mysql.jdbc.Driver");
             dbLog.log(Level.INFO, "Props Loaded Successfully");
             
         } catch (Exception e) {
@@ -58,7 +58,7 @@ public  abstract class Database {
                 getConnection().close();
             }
         }catch(Exception ex){
-            System.err.println(ex.getMessage());
+            dbLog.log(Level.SEVERE, ex.getMessage(), ex);
         }
 
         return true;

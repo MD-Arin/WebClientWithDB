@@ -1,11 +1,12 @@
-package webclientwithdb;
+package main.java.webclientwithdb;
 
 import net.webservicex.*;
+import main.java.Model.Tables;
 
 public class WebClientWithDB {
     public static void main(String[] args) {
         
-        Model.Tables table = new Model.Tables();
+        Tables table = new Tables();
         Lengths fromLengthUnit = Lengths.MILES;
         Lengths toLengthUnit = Lengths.KILOMETERS;
         
