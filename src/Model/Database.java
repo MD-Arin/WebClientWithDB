@@ -34,7 +34,7 @@ public class Database {
             this.dbPassword = dbProps.getProperty("password");
 
             Class.forName("com.mysql.jdbc.Driver");
-            dbLog.log(Level.SEVERE, dbName);
+            dbLog.log(Level.INFO, "Props Loaded Successfully");
             
         } catch (Exception e) {
             dbLog.log(Level.SEVERE, e.getMessage(), e);
