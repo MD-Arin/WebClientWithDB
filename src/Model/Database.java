@@ -34,9 +34,10 @@ public class Database {
             this.dbPassword = dbProps.getProperty("password");
 
             Class.forName("com.mysql.jdbc.Driver");
+            dbLog.log(Level.SEVERE, dbName);
             
         } catch (Exception e) {
-            e.printStackTrace();
+            dbLog.log(Level.SEVERE, e.getMessage(), e);
         }
     }
     
@@ -47,7 +48,7 @@ public class Database {
             return con;
         } catch (SQLException ex) {
             System.out.println("Not Connected");
-            dbLog.log(Level.SEVERE, null, ex);
+            dbLog.log(Level.SEVERE, ex.getMessage(), ex);
             return null;
         }
     }
