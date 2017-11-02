@@ -9,7 +9,7 @@ import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class Database {
+public  abstract class Database {
 
     private String dbUsername;
     private String dbPassword;
@@ -33,7 +33,7 @@ public class Database {
             this.dbUsername = dbProps.getProperty("username");
             this.dbPassword = dbProps.getProperty("password");
 
-            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName("com.mysql.cj.jdbc.Driver");
             dbLog.log(Level.INFO, "Props Loaded Successfully");
             
         } catch (Exception e) {
@@ -41,7 +41,7 @@ public class Database {
         }
     }
     
-    public Connection getConnection(){
+    public final Connection  getConnection(){
         try {
             Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/" + dbName, dbUsername, dbPassword);
             dbLog.log(Level.INFO, "Connected To The Database");
@@ -51,6 +51,18 @@ public class Database {
             dbLog.log(Level.SEVERE, ex.getMessage(), ex);
             return null;
         }
+    }
+    public final boolean closeConnection(){
+        try{
+            if(getConnection()!=null){
+                getConnection().close();
+            }
+        }catch(Exception ex){
+            System.err.println(ex.getMessage());
+        }
+
+        return true;
+
     }
 
 }
