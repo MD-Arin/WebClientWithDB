@@ -7,5 +7,5 @@ WebClientWithDB.iml
 /target/classes
 /target/generated-sources/
 /out/production
-/db.properties/
+db.properties
 
