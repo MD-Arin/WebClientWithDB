@@ -9,45 +9,53 @@ import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public abstract class Database {
+public class Database {
 
-    private String dbUsername;
-    private String dbPassword;
-    private String dbName;
+    private static String dbUsername;
+    private static String dbPassword;
+    private static String dbName;
 
-    private Logger dbLog = Logger.getLogger(Database.class.getName());
+    private static final Logger DBLOG = Logger.getLogger(Database.class.getName());
 
-    public Database() {
+    private static Database instance = null;
 
-        //Get Database Properties from db.properties configuration file
-        Properties dbProps = new Properties();
-        try (
-                InputStream dbInput = new FileInputStream("db.properties");) {
+    private Database() {
+    }
 
-            //Load the database properties;
-            dbProps.load(dbInput);
+    public static Database getInstance() {
+        if (instance == null) {
+            //Get Database Properties from db.properties configuration file
+            Properties dbProps = new Properties();
+            try (
+                    InputStream dbInput = new FileInputStream("db.properties");) {
 
-            //get values from db.properties file and set them to local variables
-            this.dbName = dbProps.getProperty("database");
-            this.dbUsername = dbProps.getProperty("username");
-            this.dbPassword = dbProps.getProperty("password");
+                //Load the database properties;
+                dbProps.load(dbInput);
 
-            Class.forName("com.mysql.jdbc.Driver");
-            dbLog.log(Level.INFO, "Props Loaded Successfully");
+                //get values from db.properties file and set them to local variables
+                dbName = dbProps.getProperty("database");
+                dbUsername = dbProps.getProperty("username");
+                dbPassword = dbProps.getProperty("password");
 
-        } catch (Exception e) {
-            dbLog.log(Level.SEVERE, e.getMessage(), e);
+                Class.forName("com.mysql.jdbc.Driver");
+                DBLOG.log(Level.INFO, "Props Loaded Successfully");
+
+            } catch (Exception e) {
+                DBLOG.log(Level.SEVERE, e.getMessage(), e);
+            }
+            instance = new Database();
+            return instance;
         }
+        return instance;
     }
 
     public final Connection getConnection() {
         try {
-            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/" + dbName, dbUsername, dbPassword);
-            dbLog.log(Level.INFO, "Connected To The Database");
-            return con;
+            DBLOG.log(Level.INFO, "Connected To The Database");
+            return DriverManager.getConnection("jdbc:mysql://localhost:3306/" + dbName, dbUsername, dbPassword);
         } catch (SQLException ex) {
             System.out.println("Not Connected");
-            dbLog.log(Level.SEVERE, ex.getMessage(), ex);
+            DBLOG.log(Level.SEVERE, ex.getMessage(), ex);
             return null;
         }
     }
@@ -58,7 +66,7 @@ public abstract class Database {
                 getConnection().close();
             }
         } catch (Exception ex) {
-            dbLog.log(Level.SEVERE, ex.getMessage(), ex);
+            DBLOG.log(Level.SEVERE, ex.getMessage(), ex);
         }
 
         return true;

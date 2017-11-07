@@ -9,3 +9,4 @@ WebClientWithDB.iml
 /out/production
 db.properties
 
+/dist/
